@@ -2,41 +2,73 @@ import java.util.Scanner;
 
 public class Program {
 
+	static void illegal() {
+		System.err.println("Illegal argument");
+		System.exit(-1);
+	}
+
+	static int bitness(long n) {
+		int i = 1;
+
+		while (n / 10 != 0) {
+			n = n / 10;
+			i++;
+		}
+		return i;
+	}
+
+	static int power(long grades) {
+		int power = 1;
+		for (int j = 1; j < bitness(grades); j++)
+			power *= 10;
+		return power;
+	}
+
 	public static void main(String[] args) {
 
 		Scanner in = new Scanner(System.in);
 
 		int weeks = 0;
-		int[] grades = new int[18];
+		long grades = 0;
+		int grade;
 
 		while (weeks <= 18)
 		{
-			in.next();
 			String str = in.next();
 			if (str.equals("42"))
 				break;
 			
+			if (!str.equals("Week") || !in.hasNextInt())
+				illegal();
 			int i = in.nextInt();
-			if (!str.equals("Week") || i != weeks + 1) {
-				System.err.println("Illegal argument");
-				System.exit(-1);
-			}
+			if (i != weeks + 1)
+				illegal();
 			weeks = i;
-			grades[weeks -1] = 9;
+			grade = 9;
 
-			in.next();
 			for(i = 0; i < 5; i++)
 			{
+				if (!in.hasNextInt())
+					illegal();
 				int n = in.nextInt();
-				if (n < grades[weeks - 1])
-					grades[weeks -1] = n;
+				if (n < 1 || n > 9)
+					illegal();
+				if (n < grade)
+					grade = n;
 			}
+			grades *= 10;
+			grades += grade;
 		}
+		System.out.println(grades);
 		in.close();
 		for (int i = 0; i < weeks; i++)
 		{
 			System.out.printf("Week %d ", i + 1);
-			for (int j = 0; j < grades[i]; j++)
+			int power = power(grades);
+			grade = (int)(grades / power);
+			grades -= grade * power;
+
+			for (int j = 0; j < grade; j++)
 				System.out.print("=");
 			System.out.print(">\n");
 		}
