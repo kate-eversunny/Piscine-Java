@@ -1,11 +1,11 @@
 public class User {
 
-	private Integer identifier;
+	private final int identifier;
 	private String name;
 	private Integer balance;
 
-	public User(Integer id, String n, Integer b) {
-		this.identifier = id;
+	public User(String n, Integer b) {
+		this.identifier = UserIdsGenerator.getInstance().generateId();
 		this.name = n;
 		if (b > 0)
 			this.balance = b;
@@ -25,10 +25,6 @@ public class User {
 
 	public Integer getBalance() {
 		return this.balance;
-	}
-
-	public void setIdentifier(Integer val) {
-		this.identifier = val;
 	}
 
 	public void setName(String val) {

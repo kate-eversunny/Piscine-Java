@@ -17,8 +17,8 @@ public class Program {
 		return i;
 	}
 
-	static int power(long grades) {
-		int power = 1;
+	static long power(long grades) {
+		long power = 1;
 		for (int j = 1; j < bitness(grades); j++)
 			power *= 10;
 		return power;
@@ -59,12 +59,11 @@ public class Program {
 			grades *= 10;
 			grades += grade;
 		}
-		System.out.println(grades);
 		in.close();
 		for (int i = 0; i < weeks; i++)
 		{
 			System.out.printf("Week %d ", i + 1);
-			int power = power(grades);
+			long power = power(grades);
 			grade = (int)(grades / power);
 			grades -= grade * power;
 

@@ -1,4 +1,4 @@
-
+import java.util.UUID;
 
 public class Transaction {
 
@@ -8,13 +8,13 @@ public class Transaction {
 	private Category transferCategory;
 	private Integer	amount;
 
-	public Transaction(UUID id, User r, User s, Category tr, Integer am)
+	public Transaction(UUID id, User s, User r, Category tr, Integer am)
 	{
 		this.identifier = id;
 		this.recipient = r;
 		this.sender = s;
 		this.transferCategory = tr;
-		if ((this.transferCategory == DEBIT && am < 0) || (this.transferCategory == CREDIT && am > 0))
+		if ((this.transferCategory == Category.DEBIT && am < 0) || (this.transferCategory == Category.CREDIT && am > 0))
 			this.amount = -am;
 		else
 			this.amount = am;
@@ -55,12 +55,12 @@ public class Transaction {
 	public void setTransferCategory(Category val) {
 		this.transferCategory = val;
 
-		if ((this.transferCategory == DEBIT && this->amount < 0) || (this.transferCategory == CREDIT && this->amount > 0))
-			this.amount = -this->amount;
+		if ((this.transferCategory == Category.DEBIT && this.amount < 0) || (this.transferCategory == Category.CREDIT && this.amount > 0))
+			this.amount = -this.amount;
 	}
 
 	public void setAmount(Integer val) {
-		if ((this.transferCategory == DEBIT && val < 0) || (this.transferCategory == CREDIT && val > 0))
+		if ((this.transferCategory == Category.DEBIT && val < 0) || (this.transferCategory == Category.CREDIT && val > 0))
 			this.amount = -val;
 		else
 			this.amount = val;
@@ -68,7 +68,7 @@ public class Transaction {
 
 }
 
-public enum Category {
+enum Category {
 	DEBIT,
 	CREDIT
 }

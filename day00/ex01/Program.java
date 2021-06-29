@@ -12,7 +12,7 @@ public class Program {
 				System.err.println("Illegal argument");
 				System.exit(-1);
 			}
-			else if (n == 2)
+			else if (n == 2 || n == 3)
 				System.out.println("true 1");
 			else {
 				int iter = 0;
