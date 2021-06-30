@@ -3,6 +3,9 @@ public class User {
 	private final int identifier;
 	private String name;
 	private Integer balance;
+	
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_RESET = "\u001B[0m";
 
 	public User(String n, Integer b) {
 		this.identifier = UserIdsGenerator.getInstance().generateId();
@@ -41,7 +44,7 @@ public class User {
 	}
 
 	public void printUserData() {
-		System.out.println(ANSI_GREEN + "User " + this.IDENTIFIER + ":" + ANSI_RESET);
+		System.out.println(ANSI_GREEN + "User " + this.identifier + ":" + ANSI_RESET);
 		System.out.println("NAME          " + this.name);
 		System.out.println("BALANCE       " + this.balance + "\n");
 	}
