@@ -4,12 +4,15 @@ public class User {
 	private String name;
 	private Integer balance;
 
+	public static final String ANSI_GREEN = "\u001B[32m";
+	public static final String ANSI_RESET = "\u001B[0m";
+
 	public User(Integer id, String n, Integer b) {
 		this.identifier = id;
 		this.name = n;
-		if (b > 0)
+		if (b > 0) {
 			this.balance = b;
-		else {
+		} else {
 			this.balance = 0;
 			System.out.println("Error: Attempt to record negative balance");
 		}
@@ -36,11 +39,17 @@ public class User {
 	}
 
 	public void setBalance(Integer val) {
-		if (val > 0)
+		if (val > 0) {
 			this.balance = val;
-		else {
+		} else {
 			this.balance = 0;
 			System.out.println("Error: Attempt to record negative balance");
 		}
+	}
+
+	public void printUserData() {
+		System.out.println(ANSI_GREEN + "User " + this.identifier + ":" + ANSI_RESET);
+		System.out.println("NAME          " + this.name);
+		System.out.println("BALANCE       " + this.balance + "\n");
 	}
 }

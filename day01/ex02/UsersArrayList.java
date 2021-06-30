@@ -3,6 +3,7 @@ public class UsersArrayList implements UsersList {
 	int	size = 0;
 	int capacity = 10;
 
+	@Override
 	public void addUser(User user) {
 		if (this.size == this.capacity) {
 			this.capacity *= 2;
@@ -15,6 +16,7 @@ public class UsersArrayList implements UsersList {
 		this.size++;
 	}
 	
+	@Override
 	public User getUserById(int id) throws UserNotFoundException {
 		for (int i = 0; i < this.size; i++)
 			if (this.users[i].getIdentifier() == id)
@@ -22,12 +24,14 @@ public class UsersArrayList implements UsersList {
 		throw new UserNotFoundException();
 	}
 
+	@Override
 	public User getUserByIndex(int index) throws UserNotFoundException {
 		if (index < this.size)
 			return this.users[index];
 		throw new UserNotFoundException();
 	}
 
+	@Override
 	public int getNumberOfUsers() {
 		return this.size;
 	}

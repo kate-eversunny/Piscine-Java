@@ -1,50 +1,51 @@
+import java.util.UUID;
+
 public class Program {
+
 	public static void main(String[] args) {
 	
 		User user1 = new User("Nicolas Douvet", 3000);
+		user1.printUserData();
+
 		User user2 = new User("Roberto Cabaliero", 5000);
-		User user3 = new User("Rosalia Cabaliero", 100000);
-		User user4 = new User("Nicola Douveto", 3000);
-		User user5 = new User("Robert Cabalier", 5000);
-		User user6 = new User("Rosali Cabalier", 100000);
-		User user7 = new User("Nicolo Douvets", 3000);
-		User user8 = new User("Roberta Cabaliera", 5000);
-		User user9 = new User("Rosalio Cabaliera", 100000);
-		User user10 = new User("Nicolaj Douvej", 3000);
-		User user11 = new User("Robertoj Cabalieroj", 5000);
-		User user12 = new User("Rosaliaj Cabalieroj", 100000);
+		user2.printUserData();
 
-		UsersArrayList users = new UsersArrayList();
-		System.out.println("Number of users: " + users.getNumberOfUsers());
+		Transaction tr1 = new Transaction(UUID.randomUUID(), user2, user1, Category.CREDIT, -2000);
+		Transaction tr2 = new Transaction(tr1.getIdentifier(), user2, user1, Category.DEBIT, 2000);
+		user1.printUserData();
+		user1.printTransactionsList();
+		user2.printUserData();
+		user2.printTransactionsList();
+
+
+		Transaction tr3 = new Transaction(UUID.randomUUID(), user1, user2, Category.DEBIT, 100);
+		Transaction tr4 = new Transaction(tr3.getIdentifier(), user1, user2, Category.CREDIT, -100);
+		user1.printUserData();
+		user1.printTransactionsList();
+		user2.printUserData();
+		user2.printTransactionsList();
+
+		Transaction tr5 = new Transaction(UUID.randomUUID(), user1, user2, Category.DEBIT, 1000000);
+		Transaction tr6 = new Transaction(tr5.getIdentifier(), user1, user2, Category.CREDIT, 1000000);
+		user1.printUserData();
+		user1.printTransactionsList();
+		user2.printUserData();
+		user2.printTransactionsList();
+
 		try {
-			System.out.println("User #0: " + users.getUserById(1).getName());
-		} catch (UserNotFoundException e) {
+			user1.getTransactionsList().removeTransaction(UUID.randomUUID());
+		} catch (TransactionNotFoundException e) {
 			System.out.println(e);
 		}
+
 		try {
-			System.out.println("User #0: " + users.getUserByIndex(0).getName());
-		} catch (UserNotFoundException e) {
+			user1.getTransactionsList().removeTransaction(tr3.getIdentifier());
+		} catch (TransactionNotFoundException e) {
 			System.out.println(e);
 		}
-
-		users.addUser(user1);
-		users.addUser(user2);
-		users.addUser(user3);
-		users.addUser(user4);
-		users.addUser(user5);
-		users.addUser(user6);
-		users.addUser(user7);
-		users.addUser(user8);
-		users.addUser(user9);
-		users.addUser(user10);
-
-		System.out.println("Number of users: " + users.getNumberOfUsers());
-		users.addUser(user11);
-		users.addUser(user12);
-
-		System.out.println("Number of users: " + users.getNumberOfUsers());
-		System.out.println("User #0: " + users.getUserById(1).getName());
-		System.out.println("User #0: " + users.getUserByIndex(0).getName());
-
+		user1.printUserData();
+		user1.printTransactionsList();
+		user2.printUserData();
+		user2.printTransactionsList();
 	}
 }

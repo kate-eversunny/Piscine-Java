@@ -7,9 +7,9 @@ public class User {
 	public User(String n, Integer b) {
 		this.identifier = UserIdsGenerator.getInstance().generateId();
 		this.name = n;
-		if (b > 0)
+		if (b > 0) {
 			this.balance = b;
-		else {
+		} else {
 			this.balance = 0;
 			System.out.println("Error: Attempt to record negative balance");
 		}
@@ -32,11 +32,17 @@ public class User {
 	}
 
 	public void setBalance(Integer val) {
-		if (val > 0)
+		if (val > 0) {
 			this.balance = val;
-		else {
+		} else {
 			this.balance = 0;
 			System.out.println("Error: Attempt to record negative balance");
 		}
+	}
+
+	public void printUserData() {
+		System.out.println(ANSI_GREEN + "User " + this.IDENTIFIER + ":" + ANSI_RESET);
+		System.out.println("NAME          " + this.name);
+		System.out.println("BALANCE       " + this.balance + "\n");
 	}
 }

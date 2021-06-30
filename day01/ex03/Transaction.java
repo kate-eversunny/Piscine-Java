@@ -26,6 +26,7 @@ public class Transaction {
 			System.err.println(ANSI_RED + "Transaction failed: insufficient funds" + ANSI_RESET + "\n");
 			return;
 		}
+		changeBalance();
 	}
 
 	public UUID getIdentifier() {
@@ -64,18 +65,27 @@ public class Transaction {
 		this.transferCategory = val;
 
 		if ((this.transferCategory == Category.DEBIT && this.amount < 0) || (this.transferCategory == Category.CREDIT && this.amount > 0)) {
-			System.err.println(ANSI_RED + "Transaction failed: incorrect sum" + ANSI_RESET + "\n");
+			this.amount = -this.amount;
 		}
 	}
 
 	public void setAmount(Integer val) {
 		if ((this.transferCategory == Category.DEBIT && val < 0) || (this.transferCategory == Category.CREDIT && val > 0)) {
-			System.err.println(ANSI_RED + "Transaction failed: incorrect sum" + ANSI_RESET + "\n");
+			this.amount = -val;
 		} else {
 			this.amount = val;
 		}
 	}
 
+	private void changeBalance() {
+		if (this.transferCategory == Category.CREDIT) {
+			this.sender.setBalance(this.sender.getBalance() - this.amount);
+			this.sender.getTransactionsList().addTransaction(this);
+		} else {
+			this.recipient.setBalance(this.recipient.getBalance() + this.amount);
+			this.recipient.getTransactionsList().addTransaction(this);
+		}
+	}
 }
 
 enum Category {
