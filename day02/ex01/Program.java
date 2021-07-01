@@ -27,7 +27,7 @@ public class Program {
         catch (IOException e) {
 			System.err.println(e.getMessage());
 		}
-		System.out.printf("Similarity = " + (long)(res * 1e2)/1e2);
+		System.out.println("Similarity = " + (long)(res * 1e2)/1e2);
 
 	}
 
@@ -39,6 +39,7 @@ public class Program {
 			try (Scanner in = new Scanner(new File(files[i]))) {
 				while (in.hasNext()) {
 					String str = in.next();
+					str = str.replaceAll("\\p{Punct}", "");
 					if (dictionary.containsKey(str)) {
 						Integer[] values = dictionary.get(str);
 						values[i]++;
@@ -71,6 +72,8 @@ public class Program {
 			sum1 += Math.pow(dictionary.get(key)[0], 2);
 			sum2 += Math.pow(dictionary.get(key)[1], 2);
 		}
+		if (sum1 == 0 && sum2 == 0)
+			return 1.0;
 		denominator = Math.sqrt(sum1) * Math.sqrt(sum2);
 		return numerator/denominator;
 	}
