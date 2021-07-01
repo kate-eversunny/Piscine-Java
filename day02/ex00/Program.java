@@ -1,65 +1,102 @@
 import java.io.*;
 import java.util.HashMap;
 import java.util.Scanner;
-import java.math.BigInteger;
 import java.util.ArrayList;
+import java.io.FileWriter;
 
 
 public class Program {
 
-	public static void main(String[] args) {
-		Scanner sig;
-		OutputStream res;
-		Scanner line;
+	static HashMap<ArrayList<Integer>, String> getSignaturesList() {
 
+		Scanner in = null;
 		try {
-			sig = new Scanner(new File("signatures.txt"));
+			in = new Scanner(new File("signatures.txt"));
 		} catch (FileNotFoundException e) {
-			System.err.println(e);
-			return;
+			System.err.println(e.getMessage());
+			System.exit(-1);
 		}
 
-		HashMap<ArrayList<BigInteger>, String> signatures = new HashMap<>();
+		HashMap<ArrayList<Integer>, String> signatures = new HashMap<>();
+		Scanner line;
 		String value;
-		ArrayList<BigInteger> key;
-		BigInteger temp;
-		while (sig.hasNext())
+		ArrayList<Integer> key;
+		Integer temp;
+		while (in.hasNext())
 		{
 			key = new ArrayList<>();
-			value = sig.next();
-			temp = new BigInteger("0", 16);
+			value = in.next();
+			value = value.substring(0, value.length() - 1);
 			int i = 0;
-			if (!sig.hasNextLine()) {	
-				break;
+			if (!in.hasNextLine()) {	
+				System.err.println("Error in signatures.txt file");
+				System.exit(-1);
 			}
-			line = new Scanner(sig.nextLine());
+			line = new Scanner(in.nextLine());
 
 			while (line.hasNext()) {
-				temp = new BigInteger(line.next(), 16);
+				temp = Integer.parseInt(line.next(), 16);
 				key.add(temp);
 			}
 			line.close();
 			signatures.put(key, value);
 		}
-		sig.close();
+		in.close();
+		return signatures;
+	}
 
-		// int i = 0;
-		// while ((i = sig.read()) >= 0) {
-		// 	StringBuilder str = new StringBuilder();
+	static void compareSignatures(HashMap<ArrayList<Integer>, String> signatures, String path) {
 
-		// 	while ((char)i != ' ') {
-		// 		str.append((char)i);
-		// 	}
+		try (InputStream file = new FileInputStream(new File(path)); FileWriter writer = new FileWriter("result.txt", true)) {
 
-		// 	signatures.put(, str);
-		// }
+			ArrayList<Integer> fileSignature = new ArrayList<>();
+			final int MAX_BYTE = 8;
+			int readRes = 0;
+			String str;
+			Integer temp;
+	
+			for (int i = 0; i < MAX_BYTE; i++)
+			{
+				if ((readRes = file.read()) >= 0) {
+					str = Integer.toHexString(readRes);
+					temp = Integer.parseInt(str, 16);
+					fileSignature.add(temp);
+					if (signatures.containsKey(fileSignature)) {
+						writer.write(signatures.get(fileSignature));
+						writer.append('\n');
+						writer.flush();
+						writer.close();
+						System.out.println("PROCESSED");
+						file.close();
+						return;
+					}
+				}
+			}
+			System.out.println("UNDEFINED");
+			writer.close();
+			file.close();
+			} catch (IOException e) {
+				System.err.println(e.getMessage());
+			}
+	}
 
-		try {
-			res = new FileOutputStream(new File("result.txt"));
-		} catch (FileNotFoundException e) {
-			System.err.println(e);
-			return;
+	public static void main(String[] args) {
+
+		HashMap<ArrayList<Integer>, String> signatures = getSignaturesList();
+		try (FileWriter writer = new FileWriter("result.txt", false)) {
+			writer.close();
+		} catch (IOException e) {
+			System.err.println(e.getMessage());
+			System.exit(-1);
 		}
 
+		Scanner in = new Scanner(System.in);
+		while (in.hasNextLine()) {
+			String path = in.nextLine();
+			if (path.equals("42")) {
+				return;
+			}
+			compareSignatures(signatures, path);
+		}
 	}
 }
